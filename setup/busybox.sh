@@ -37,4 +37,36 @@ make -j$(nproc)
 
 echo "Generating basic filesystem(_install)..."
 make install
+cd _install
+
+echo "Rootfs directory structure..."
+mkdir -p dev proc sys etc/init.d
+
+rm -f init
+ln -s bin/busybox init
+
+echo "Initializing etc/inittab config..."
+cat << 'EOF' > etc/inittab
+::sysinit:/etc/init.d/rcS
+console::askfirst:-/bin/sh
+::ctrlaltdel:/sbin/reboot
+::restart:/sbin/init
+EOF
+
+echo "Initialization startup script (etc/init.d/rcS)..."
+cat << 'EOF' > etc/init.d/rcS
+#!/bin/sh
+mount -t proc proc /proc
+mount -t sysfs sysfs /sys
+mount -t devtmpfs none /dev
+echo -e "\nInitializing baseline services... Done."
+EOF
+
+chmod +x etc/init.d/rcS
+
+echo "Packaging into initramfs.cpio.gz..."
+find . -print0 | cpio --null -ov --format=newc | gzip -9 > "${OUTPUT_DIR}/initramfs.cpio.gz"
+
+echo "Success! Busybox compilation and initramfs generation complete."
+echo "Package destination: ${OUTPUT_DIR}/initramfs.cpio.gz"
 
