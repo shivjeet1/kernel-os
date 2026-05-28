@@ -50,6 +50,7 @@ cat << 'EOF' > etc/inittab
 ::sysinit:/etc/init.d/rcS
 console::askfirst:-/bin/sh
 ::ctrlaltdel:/sbin/reboot
+::shutdown:/bin/umount -a -r
 ::restart:/sbin/init
 EOF
 
