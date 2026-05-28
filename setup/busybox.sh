@@ -59,7 +59,7 @@ cat << 'EOF' > etc/init.d/rcS
 mount -t proc proc /proc
 mount -t sysfs sysfs /sys
 mount -t devtmpfs none /dev
-echo -e "\nInitializing baseline services... Done."
+echo -e "\nInitializing kernel-os ... Done."
 EOF
 
 chmod +x etc/init.d/rcS
