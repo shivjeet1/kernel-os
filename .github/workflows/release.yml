@@ -1,0 +1,49 @@
+name: Build and Release bzImage and initramfs
+
+on:
+  push:
+    tags:
+      - 'v*' 
+  workflow_dispatch: 
+
+jobs:
+  build-in-arch:
+    runs-on: ubuntu-22.04
+
+    container:
+      image: archlinux:latest
+    permissions:
+      contents: write 
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Initialize Pacman Keyring and Install System Dependencies
+        run: |
+          pacman-key --init
+          pacman-key --populate archlinux
+          pacman -Syu --noconfirm
+          
+          pacman -S --noconfirm base-devel bc kmod cpio ncurses curl
+
+      - name: Configure Executable Permissions
+        run: |
+          chmod +x setup/linux-kernel.sh
+          chmod +x setup/busybox.sh
+
+      - name: Execute Kernel Compilation
+        run: ./setup/linux-kernel.sh
+
+      - name: Execute BusyBox & Initramfs Pack
+        run: ./setup/busybox.sh
+
+      - name: Publish Artifacts to GitHub Releases
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            output/bzImage
+            output/initramfs.cpio.gz
+          generate_release_notes: true
+
+
