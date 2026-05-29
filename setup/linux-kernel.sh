@@ -35,6 +35,11 @@ echo "Injecting kernel features..."
 ./scripts/config --enable CONFIG_PRINTK
 ./scripts/config --enable CONFIG_SYSFS
 
+./scripts/config --enable CONFIG_CMDLINE_BOOL
+./scripts/config --set-str CONFIG_CMDLINE "console=tty0 quiet loglevel=3 no-reboot"
+./scripts/config --enable CONFIG_CMDLINE_OVERRIDE
+
+
 echo "Validating configuration (olddefconfig)..."
 make ARCH=x86_64 olddefconfig
 
