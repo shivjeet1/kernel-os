@@ -2,7 +2,7 @@ name: Deploy Kernel OS Documentation UI
 
 on:
   push:
-    branches: ["main"]
+    branches: ["virtual-machine"]
     paths:
       # ONLY run this workflow if something in the React app changes
       - 'docs/gui-exp/**'
