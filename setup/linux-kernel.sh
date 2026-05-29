@@ -32,6 +32,21 @@ echo "Injecting kernel features..."
 ./scripts/config --enable CONFIG_SERIAL_8250_CONSOLE   
 ./scripts/config --enable CONFIG_BINFMT_ELF            
 
+echo "PS/2 Hardware Bus & Keyboard drivers..."
+./scripts/config --enable CONFIG_INPUT
+./scripts/config --enable CONFIG_INPUT_KEYBOARD
+./scripts/config --enable CONFIG_KEYBOARD_ATKBD
+# The missing Motherboard PS/2 Controller (Crucial for QEMU)
+./scripts/config --enable CONFIG_SERIO
+./scripts/config --enable CONFIG_SERIO_I8042
+./scripts/config --enable CONFIG_SERIO_LIBPS2
+
+echo "Virtual Terminal & VGA Display drivers..."
+./scripts/config --enable CONFIG_VT
+./scripts/config --enable CONFIG_VT_CONSOLE
+./scripts/config --enable CONFIG_VGA_CONSOLE
+./scripts/config --enable CONFIG_DUMMY_CONSOLE
+
 ./scripts/config --enable CONFIG_PRINTK
 ./scripts/config --enable CONFIG_SYSFS
 
