@@ -1,6 +1,5 @@
-# kernel-os
+# Kernel OS
 
-# Minimal Kernel OS
 This project is a custom, bare-metal Linux operating system built entirely from scratch. Instead of taking a heavy, pre-configured distribution, this project starts from an absolute blank slate (`allnoconfig`) and surgically adds only the drivers and subsystems required to boot a fully functional terminal environment.
 
 The entire build process is automated through bash scripts and a GitHub Actions CI/CD pipeline.
@@ -69,5 +68,4 @@ qemu-system-x86_64 \
 
 **To shut down the OS:** Simply type `reboot` inside the BusyBox terminal. The `init` daemon will safely unmount the filesystems, halt the kernel, and cleanly exit the QEMU window.
 
-```
 
